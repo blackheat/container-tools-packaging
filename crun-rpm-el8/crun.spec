@@ -1,6 +1,6 @@
 Summary: OCI runtime written in C
 Name: crun
-Version: 0.11
+Version: 0.13
 Release: 1%{?dist}
 Source0: https://github.com/containers/crun/releases/download/%{version}/%{name}-%{version}.tar.gz
 License: GPLv3+
@@ -14,10 +14,10 @@ BuildRequires: python
 BuildRequires: git
 BuildRequires: libcap-devel
 BuildRequires: systemd-devel
-BuildRequires: libsystemd-devel
 BuildRequires: yajl-devel
 BuildRequires: libseccomp-devel
 BuildRequires: libselinux-devel
+BuildRequires: python3-libmount
 BuildRequires: libtool
 BuildRequires: go-md2man
 Provides: oci-runtime = 2
@@ -44,6 +44,24 @@ rm -rf $RPM_BUILD_ROOT/usr/lib*
 %{_mandir}/man1/*
 
 %changelog
+* Thu Mar 05 2020 Giuseppe Scrivano <gscrivan@redhat.com> - 0.13-1
+- built version 0.13
+
+* Mon Feb 17 2020 Giuseppe Scrivano <gscrivan@redhat.com> - 0.12.2.1-1
+- built version 0.12.2.1
+
+* Mon Feb 17 2020 Giuseppe Scrivano <gscrivan@redhat.com> - 0.12.2-1
+- built version 0.12.2
+
+* Thu Feb 6 2020 Giuseppe Scrivano <gscrivan@redhat.com> - 0.12.1-1
+- built version 0.12.1
+
+* Mon Feb 3 2020 Giuseppe Scrivano <gscrivan@redhat.com> - 0.12-1
+- built version 0.12
+
+* Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 0.11-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Mon Dec 23 2019 Giuseppe Scrivano <gscrivan@redhat.com> - 0.11-1
 - built version 0.11
 
