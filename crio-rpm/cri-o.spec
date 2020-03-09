@@ -47,7 +47,7 @@ BuildRequires: device-mapper-devel
 BuildRequires: git
 BuildRequires: glib2-devel
 BuildRequires: glibc-static
-# BuildRequires: go-md2man
+BuildRequires: go-md2man
 BuildRequires: gpgme-devel
 BuildRequires: libassuan-devel
 BuildRequires: libseccomp-devel
