@@ -21,6 +21,7 @@
 %global commit0 6d0ffae63b9b7d8f07e7f9cf50736a67fb31faf3
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global git0 https://%{import_path}
+%global git1 https://src.fedoraproject.org/rpms/cri-o/raw/1.17/f
 
 %global service_name crio
 
@@ -37,9 +38,9 @@ Summary: Kubernetes Container Runtime Interface for OCI-based containers
 License: ASL 2.0
 URL: %{git0}
 Source0: %{git0}/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
-Source3: %{service_name}-network.sysconfig
-Source4: %{service_name}-storage.sysconfig
-Source5: %{service_name}-metrics.sysconfig
+Source3: %{git1}/%{service_name}-network.sysconfig
+Source4: %{git1}/%{service_name}-storage.sysconfig
+Source5: %{git1}/%{service_name}-metrics.sysconfig
 # If go_compiler is not set to 1, there is no virtual provide. Use golang instead.
 BuildRequires: %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
 BuildRequires: btrfs-progs-devel
