@@ -10,16 +10,17 @@ URL: https://github.com/containers/crun
 BuildRequires: autoconf
 BuildRequires: automake
 BuildRequires: gcc
-BuildRequires: python
+BuildRequires: python3
 BuildRequires: git
 BuildRequires: libcap-devel
 BuildRequires: systemd-devel
 BuildRequires: yajl-devel
 BuildRequires: libseccomp-devel
 BuildRequires: libselinux-devel
-BuildRequires: python3-libmount
 BuildRequires: libtool
 BuildRequires: go-md2man
+BuildRequires: gettext
+BuildRequires: gcc
 Provides: oci-runtime = 2
 
 %description

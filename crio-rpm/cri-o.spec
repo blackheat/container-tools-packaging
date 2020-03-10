@@ -42,7 +42,7 @@ Source4: %{service_name}-storage.sysconfig
 Source5: %{service_name}-metrics.sysconfig
 # If go_compiler is not set to 1, there is no virtual provide. Use golang instead.
 BuildRequires: %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
-# BuildRequires: btrfs-progs-devel
+BuildRequires: btrfs-progs-devel
 BuildRequires: device-mapper-devel
 BuildRequires: git
 BuildRequires: glib2-devel
