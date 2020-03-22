@@ -1,4 +1,4 @@
-%global with_debug 0
+%global with_debug 1
 %global with_check 0
 
 %if 0%{?with_debug}
@@ -18,29 +18,30 @@
 %global repo cri-o
 # https://github.com/cri-o/cri-o
 %global import_path %{provider}.%{provider_tld}/%{project}/%{repo}
-%global commit0 6d0ffae63b9b7d8f07e7f9cf50736a67fb31faf3
+%global commit0 ee2de87bd8e2a7a84799476cb4fc4ce8a78fdf6d
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global git0 https://%{import_path}
-%global git1 https://src.fedoraproject.org/rpms/cri-o/raw/1.17/f
 
 %global service_name crio
 
 # Used for comparing with latest upstream tag
 # to decide whether to autobuild (non-rawhide only)
-%global built_tag v1.17.0
+%define built_tag v1.17.1
+%define built_tag_strip %(b=%{built_tag}; echo ${b:1})
+%define download_url %{git0}/archive/%{built_tag}.tar.gz
 
-Name: %{repo}
+Name: %{repo}-1.17
 Epoch: 2
-Version: 1.17.0
-Release: 1%{?dist}
+Version: 1.17.1
+Release: 2%{?dist}
 ExcludeArch: ppc64
 Summary: Kubernetes Container Runtime Interface for OCI-based containers
 License: ASL 2.0
 URL: %{git0}
-Source0: %{git0}/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
-Source3: %{git1}/%{service_name}-network.sysconfig
-Source4: %{git1}/%{service_name}-storage.sysconfig
-Source5: %{git1}/%{service_name}-metrics.sysconfig
+Source0: %{download_url}
+Source3: %{service_name}-network.sysconfig
+Source4: %{service_name}-storage.sysconfig
+Source5: %{service_name}-metrics.sysconfig
 # If go_compiler is not set to 1, there is no virtual provide. Use golang instead.
 BuildRequires: %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
 BuildRequires: btrfs-progs-devel
@@ -68,7 +69,7 @@ Requires: socat
 %{summary}
 
 %prep
-%autosetup -Sgit -n %{name}-%{commit0}
+%autosetup -Sgit -n %{name}-%{built_tag_strip}
 sed -i 's/install.config: crio.conf/install.config:/' Makefile
 sed -i 's/install.bin: binaries/install.bin:/' Makefile
 sed -i 's/\.gopathok //' Makefile
@@ -115,7 +116,7 @@ install -dp %{buildroot}%{_sysconfdir}/%{service_name}
 install -dp %{buildroot}%{_datadir}/containers/oci/hooks.d
 install -dp %{buildroot}%{_datadir}/oci-umount/oci-umount.d
 install -p -m 644 crio.conf %{buildroot}%{_sysconfdir}/%{service_name}
-#install -p -m 644 seccomp.json %%{buildroot}%%{_sysconfdir}/%%{service_name}
+install -p -m 644 seccomp.json %{buildroot}%{_sysconfdir}/%{service_name}
 install -p -m 644 crio-umount.conf %{buildroot}%{_datadir}/oci-umount/oci-umount.d/%{service_name}-umount.conf
 install -p -m 644 crictl.yaml %{buildroot}%{_sysconfdir}
 
@@ -176,6 +177,9 @@ export GOPATH=%{buildroot}/%{gopath}:$(pwd)/Godeps/_workspace
 %{_unitdir}/%{service_name}-shutdown.service
 %{_unitdir}/%{service_name}-wipe.service
 %dir %{_sharedstatedir}/containers
+%dir %{_datadir}/containers
+%dir %{_datadir}/containers/oci
+%dir %{_datadir}/containers/oci/hooks.d
 %dir %{_datadir}/oci-umount
 %dir %{_datadir}/oci-umount/oci-umount.d
 %{_datadir}/oci-umount/oci-umount.d/%{service_name}-umount.conf
@@ -184,6 +188,14 @@ export GOPATH=%{buildroot}/%{gopath}:$(pwd)/Godeps/_workspace
 %{_datadir}/zsh/site-functions/_%{service_name}*
 
 %changelog
+* Fri Mar 20 2020 Lokesh Mandvekar <lsm5@fedoraproject.org> - 2:1.17.1-2
+- Resolves: #1795858 - list /usr/share/containers/oci/hooks.d
+- enable debuginfo
+- spec changes for autobuilder
+
+* Mon Mar 16 2020 RH Container Bot <rhcontainerbot@fedoraproject.org> - 2:1.17.1-1
+- autobuilt v1.17.1
+
 * Mon Feb 10 2020 RH Container Bot <rhcontainerbot@fedoraproject.org> - 2:1.17.0-1
 - autobuilt $LATEST_TAG
 
